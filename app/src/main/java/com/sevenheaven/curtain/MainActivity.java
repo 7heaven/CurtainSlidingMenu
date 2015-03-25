@@ -20,6 +20,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         curtainView = (CurtainView) findViewById(R.id.curtain);
+        curtainView.setDirection(CurtainView.DIRECTION_LEFT);
     }
 
 

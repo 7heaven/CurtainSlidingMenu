@@ -39,8 +39,8 @@ public class CurtainView extends View {
 
     private AccelerateInterpolator interpolator;
 
-    private final static int DIRECTION_LEFT = 0;
-    private final static int DIRECTION_RIGHT = 1;
+    public final static int DIRECTION_LEFT = 0;
+    public final static int DIRECTION_RIGHT = 1;
 
     private int direction = DIRECTION_RIGHT;
 
@@ -84,6 +84,8 @@ public class CurtainView extends View {
         if (!newApiFlag) {
 
             // 硬件加速不支持drawBitmapMesh的colors绘制的情况下,在原bitmap的上层覆盖一个半透明带阴影的bitmap以实现阴影功能
+            //when API level lower than 18,the arguments of drawBitmapMesh method won't work when hardware accelerate is activated,
+            //so we cover a transparent layer on the top of the origin bitmap to create a shadow effect
 
             shadowMask =
                     Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
