@@ -38,6 +38,7 @@ public class MainActivity extends CurtainMenuActivity {
                 "It is a far, far better thing that I do, than I have ever done; it is a far, far better rest that I go to than I have ever known.");
 
         editText.setText(ss);
+
     }
 
     public void redBackgroundButtonClick(View view){
@@ -70,5 +71,9 @@ public class MainActivity extends CurtainMenuActivity {
         }
 
         enableLineNumber = !enableLineNumber;
+    }
+
+    public void menuClick(View view){
+        getCurtainLayout().toggle();
     }
 }

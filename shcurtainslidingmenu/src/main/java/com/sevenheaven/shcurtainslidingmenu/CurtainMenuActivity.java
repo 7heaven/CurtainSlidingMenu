@@ -57,4 +57,8 @@ public class CurtainMenuActivity extends Activity {
 
         contentLayout.addMenu(menu);
     }
+
+    protected CurtainContentLayout getCurtainLayout(){
+        return this.contentLayout;
+    }
 }

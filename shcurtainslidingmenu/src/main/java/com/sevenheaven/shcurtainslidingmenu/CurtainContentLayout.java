@@ -49,9 +49,9 @@ public class CurtainContentLayout extends FrameLayout {
 
     private boolean inSlidingMode = false;
 
-    private int SLIDING_MODE_CLOSED = 0;
-    private int SLIDING_MODE_OPENED = 1;
-    private int SLIDING_MODE_SLIDING = 2;
+    private static final int SLIDING_MODE_CLOSED = 0;
+    private static final int SLIDING_MODE_OPENED = 1;
+    private static final int SLIDING_MODE_SLIDING = 2;
 
     private int slidingMode = 0;
 
@@ -261,6 +261,22 @@ public class CurtainContentLayout extends FrameLayout {
 //
 //
     }
+
+    public void toggle(){
+        switch(slidingMode){
+            case SLIDING_MODE_CLOSED:
+                slidingAnimator.setIntValues(vx, defaultMenuWidth);
+                slidingAnimator.start();
+                break;
+            case SLIDING_MODE_OPENED:
+                slidingAnimator.setIntValues(vx, 0);
+                slidingAnimator.start();
+                break;
+        }
+
+
+    }
+
 
     void setSlidingFactor(int slidingFactor){
         this.vx = slidingFactor;
