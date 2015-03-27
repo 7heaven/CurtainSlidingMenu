@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.sevenheaven.curtain"
         minSdkVersion 8
         targetSdkVersion 21
         versionCode 1
@@ -19,16 +18,8 @@ android {
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile(name: 'shtextextend', ext: 'aar')
     compile files('libs/library_nineoldandroids.jar')
-    compile project(':shcurtainslidingmenu')
 }

@@ -1,6 +1,5 @@
-package com.sevenheaven.curtain;
+package com.sevenheaven.shcurtainslidingmenu;
 
-import android.view.View;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +11,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
 public class CurtainView extends View {
@@ -69,7 +69,7 @@ public class CurtainView extends View {
     public CurtainView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snipper);
+//        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snipper);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         handler.post(delayRunnable);
@@ -81,7 +81,12 @@ public class CurtainView extends View {
         verts = new float[(bitmapWidth + 1) * (bitmapHeight + 1) * 2];
         colors = new int[(bitmapWidth + 1) * (bitmapHeight + 1)];
 
-        if (!newApiFlag) {
+        setupMask();
+
+    }
+
+    private void setupMask(){
+        if (!newApiFlag && bitmap != null) {
 
             // 硬件加速不支持drawBitmapMesh的colors绘制的情况下,在原bitmap的上层覆盖一个半透明带阴影的bitmap以实现阴影功能
             //when API level lower than 18,the arguments of drawBitmapMesh method won't work when hardware accelerate is activated,
@@ -145,6 +150,10 @@ public class CurtainView extends View {
     public void setTexture(Bitmap bitmap){
         this.bitmap = bitmap;
 
+        if(shadowMask == null){
+            setupMask();
+        }
+
         invalidate();
     }
 
@@ -162,6 +171,13 @@ public class CurtainView extends View {
     public void flip(int x, int y){
         touchX = x;
         touchY = y;
+
+        invalidate();
+    }
+
+    public void percentageFlip(float x, float y){
+        touchX = (int) (width * x);
+        touchY = (int) (height * y);
 
         invalidate();
     }
