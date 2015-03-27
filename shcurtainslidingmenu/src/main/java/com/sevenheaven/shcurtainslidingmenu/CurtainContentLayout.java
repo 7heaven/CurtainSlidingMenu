@@ -176,6 +176,8 @@ public class CurtainContentLayout extends FrameLayout {
                     slidingAnimator.setIntValues(vx, 0);
                 }
 
+                slidingAnimator.setDuration((long) (((float) vx / (float) Math.abs(velocityX)) * 1000.0F));
+
                 slidingAnimator.start();
             }else{
                 if(ev2.getX() > defaultMenuWidth / 2){
@@ -183,6 +185,8 @@ public class CurtainContentLayout extends FrameLayout {
                 }else{
                     slidingAnimator.setIntValues(vx, 0);
                 }
+
+                slidingAnimator.setDuration(200);
 
                 slidingAnimator.start();
             }
@@ -266,10 +270,12 @@ public class CurtainContentLayout extends FrameLayout {
         switch(slidingMode){
             case SLIDING_MODE_CLOSED:
                 slidingAnimator.setIntValues(vx, defaultMenuWidth);
+                slidingAnimator.setDuration(200L);
                 slidingAnimator.start();
                 break;
             case SLIDING_MODE_OPENED:
                 slidingAnimator.setIntValues(vx, 0);
+                slidingAnimator.setDuration(200L);
                 slidingAnimator.start();
                 break;
         }
@@ -360,9 +366,11 @@ public class CurtainContentLayout extends FrameLayout {
                 if(Math.abs(velocityX) <= 0 && initX != currentX){
                     if(event.getX() > defaultMenuWidth / 2){
                         slidingAnimator.setIntValues(vx, defaultMenuWidth);
+                        slidingAnimator.setDuration(200L);
                         slidingAnimator.start();
                     }else{
                         slidingAnimator.setIntValues(vx, 0);
+                        slidingAnimator.setDuration(200L);
                         slidingAnimator.start();
                     }
                 }
