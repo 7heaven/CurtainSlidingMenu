@@ -25,8 +25,8 @@ public class CurtainView extends View {
     private int width, height;
     private int centerX, centerY;
 
-    private int bitmapWidth = 30;
-    private int bitmapHeight = 10;
+    private int bitmapWidth = 40;
+    private int bitmapHeight = 7;
 
     private int touchX;
     private int touchY;
@@ -207,6 +207,7 @@ public class CurtainView extends View {
                 float realWidth = longRatio * (touchX - delayOffsetX);
                 float xBlock = (float) width / (float) bitmapWidth;
 
+//                float r = 0;
                 for (int x = 0; x <= bitmapWidth; x++) {
 
                     ratio = (touchX - realWidth) / (float) width;
@@ -220,7 +221,9 @@ public class CurtainView extends View {
                             break;
                     }
 
-                    float realHeight = height - ((float) Math.sin((x * 2) * 0.5F - Math.PI) * gap + gap);
+                    float realHeight = height - ((float) Math.sin(x * 0.5F - Math.PI) * gap + gap);
+
+//                    r += x == 0 ? 0 : bitmapWidth * 0.08F / x;
 
                     float offsetY = realHeight / bitmapHeight * y;
 
