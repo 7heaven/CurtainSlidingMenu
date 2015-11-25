@@ -1,3 +1,5 @@
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CurtainSlidingMenu-green.svg?style=true)](https://android-arsenal.com/details/1/2813)
+
 # CurtainSlidingMenu
 SlidingMenu With Curtain Effect
 
