@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/CurtainSlidingMenu.iml" filepath="$PROJECT_DIR$/CurtainSlidingMenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/curtain.iml" filepath="$PROJECT_DIR$/curtain.iml" />
       <module fileurl="file://$PROJECT_DIR$/shcurtainslidingmenu/shcurtainslidingmenu.iml" filepath="$PROJECT_DIR$/shcurtainslidingmenu/shcurtainslidingmenu.iml" />
     </modules>
   </component>
