@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.util.Property;
 
 /**
@@ -28,8 +29,6 @@ public class CurtainContentLayout extends FrameLayout {
 
     private static final int DEFAULT_INTERCEPT_LENGTH = 30;
     private int defaultMenuWidth;
-
-    private SparseArray<String> actions = new SparseArray<String>();
 
     private View content;
     private View menu;
@@ -59,19 +58,7 @@ public class CurtainContentLayout extends FrameLayout {
     private int maxVY;
     private VelocityTracker velocityTracker;
 
-    private float slidingFactor;
-    private Property<CurtainContentLayout, Integer> slidingProperty = new Property<CurtainContentLayout, Integer>(Integer.class, "slidingFactor"){
-        @Override
-        public Integer get(CurtainContentLayout contentLayout){
-            return contentLayout.getSlidingFactor();
-        }
-
-        @Override
-        public void set(CurtainContentLayout contentLayout, Integer slidingFactor){
-            contentLayout.setSlidingFactor(slidingFactor);
-        }
-    };
-    private ObjectAnimator slidingAnimator;
+    private ValueAnimator slidingAnimator;
 
     private GestureDetector gestureDetector;
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener(){
@@ -148,7 +135,7 @@ public class CurtainContentLayout extends FrameLayout {
                 currentX = (int) ev2.getX();
                 currentY = (int) ev2.getY();
 
-                vx = slidingMode == SLIDING_MODE_CLOSED ? (int) currentX - initX : defaultMenuWidth - (initX - currentX);
+                vx = slidingMode == SLIDING_MODE_CLOSED ? currentX - initX : defaultMenuWidth - (initX - currentX);
 
                 if(vx < 0){
                     vx = 0;
@@ -167,8 +154,6 @@ public class CurtainContentLayout extends FrameLayout {
         @Override
         public boolean onFling(MotionEvent ev1, MotionEvent ev2, float velocityX, float velocityY){
 
-            Log.d("vx:" + velocityX, "vy:" + velocityY);
-
             if(Math.abs(velocityX) > minVelocity * 5){
                 if(velocityX > 0){
                     slidingAnimator.setIntValues(vx, defaultMenuWidth);
@@ -176,7 +161,7 @@ public class CurtainContentLayout extends FrameLayout {
                     slidingAnimator.setIntValues(vx, 0);
                 }
 
-                slidingAnimator.setDuration((long) (((float) vx / (float) Math.abs(velocityX)) * 1000.0F));
+                slidingAnimator.setDuration((long) (((float) vx / Math.abs(velocityX)) * 1000.0F));
 
                 slidingAnimator.start();
             }else{
@@ -207,12 +192,6 @@ public class CurtainContentLayout extends FrameLayout {
     public CurtainContentLayout(Context context, AttributeSet attrs, int defStyle){
         super(context, attrs, defStyle);
 
-        actions.put(MotionEvent.ACTION_DOWN, "ACTION_DOWN");
-        actions.put(MotionEvent.ACTION_MOVE, "ACTION_MOVE");
-        actions.put(MotionEvent.ACTION_UP, "ACTION_UP");
-        actions.put(MotionEvent.ACTION_CANCEL, "ACTION_CANCEL");
-        actions.put(MotionEvent.ACTION_OUTSIDE, "ACTION_OUTSIDE");
-
         defaultMenuWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
 
         curtainView = new CurtainView(context);
@@ -228,22 +207,23 @@ public class CurtainContentLayout extends FrameLayout {
 
         minVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
 
-        Log.d("minminmin:" + minVelocity, "non");
-
-        slidingAnimator = ObjectAnimator.ofInt(this, slidingProperty, vx, 1);
+        slidingAnimator = ValueAnimator.ofInt(vx, 1);
         slidingAnimator.setDuration(200L);
         slidingAnimator.setInterpolator(new DecelerateInterpolator());
+        slidingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value = (Integer) animation.getAnimatedValue();
+                setSlidingFactor(value);
+            }
+        });
         slidingAnimator.addListener(new Animator.AnimatorListener(){
 
             @Override
-            public void onAnimationCancel(Animator animator){
-
-            }
+            public void onAnimationCancel(Animator animator){}
 
             @Override
-            public void onAnimationStart(Animator animator){
-
-            }
+            public void onAnimationStart(Animator animator){}
 
             @Override
             public void onAnimationEnd(Animator animator){
@@ -255,9 +235,7 @@ public class CurtainContentLayout extends FrameLayout {
             }
 
             @Override
-            public void onAnimationRepeat(Animator animator){
-
-            }
+            public void onAnimationRepeat(Animator animator){}
 
         });
 
@@ -355,8 +333,6 @@ public class CurtainContentLayout extends FrameLayout {
                 currentX = (int) event.getX();
                 currentY = (int) event.getY();
 
-                Log.d("vx:" + vx, "vxvxv");
-
                 final VelocityTracker velocityTracker = this.velocityTracker;
                 final int pointerId = event.getPointerId(0);
                 velocityTracker.computeCurrentVelocity(1000, ViewConfiguration.get(getContext()).getScaledMaximumFlingVelocity());
@@ -381,8 +357,6 @@ public class CurtainContentLayout extends FrameLayout {
                 break;
         }
 
-        Log.d("action:" + actions.get(event.getActionMasked(), "NOT RECORDED"), "x:" + event.getX() + ",y:" + event.getY());
-
         return gestureDetector.onTouchEvent(event);
     }
 
@@ -404,7 +378,7 @@ public class CurtainContentLayout extends FrameLayout {
             c.drawRect(0, 0, getWidth(), getHeight(), paint);
         }
         v.draw(c);
-        //make sure the color of the top will continue to the status bar area
+        //make sure the color on the top will continue to the status bar area
 //        paint.setColor(b.getPixel(0, getStatusBarHeight() + 1));
 //        c.drawRect(0, 0, getContext().getResources().getDisplayMetrics().widthPixels, getStatusBarHeight(), paint);
         return b;
@@ -423,10 +397,7 @@ public class CurtainContentLayout extends FrameLayout {
     public void dispatchDraw(Canvas canvas){
         if(inSlidingMode){
             paint.setColor(0xFF000000);
-
             canvas.drawRect(menu.getRight(), 0, getWidth(), getHeight(), paint);
-
-
         }
 
 
