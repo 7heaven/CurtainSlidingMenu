@@ -69,7 +69,6 @@ public class CurtainView extends View {
     public CurtainView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-//        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snipper);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         handler.post(delayRunnable);
@@ -111,8 +110,6 @@ public class CurtainView extends View {
             int[] colors = new int[blockPerWave];
             float[] offsets = new float[blockPerWave];
 
-            Log.d("singleWave:" + singleWave, "blockPerWave:" + blockPerWave);
-
 
             float perOffset = 1.0F / blockPerWave;
 
@@ -127,9 +124,6 @@ public class CurtainView extends View {
                         (int) (perAlpha * Math.sin((float) ii / (float) blockPerWave * 3.14F)) << 24;
 
                 offsets[iii] = perOffset * iii;
-
-                Log.d("index:" + i, "colors:0x" + Integer.toHexString(colors[iii]) + ", offset:"
-                        + offsets[iii]);
             }
 
             maskShader =
@@ -207,7 +201,6 @@ public class CurtainView extends View {
                 float realWidth = longRatio * (touchX - delayOffsetX);
                 float xBlock = (float) width / (float) bitmapWidth;
 
-//                float r = 0;
                 for (int x = 0; x <= bitmapWidth; x++) {
 
                     ratio = (touchX - realWidth) / (float) width;
@@ -222,8 +215,6 @@ public class CurtainView extends View {
                     }
 
                     float realHeight = height - ((float) Math.sin(x * 0.5F - Math.PI) * gap + gap);
-
-//                    r += x == 0 ? 0 : bitmapWidth * 0.08F / x;
 
                     float offsetY = realHeight / bitmapHeight * y;
 
